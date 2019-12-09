@@ -30,7 +30,7 @@ class MainRepositoryImpl @Inject constructor(
     init {
         dataSource.apply {
             downloadMealRandom.observeForever{
-
+                persistRandomMeal(it)
             }
 
             downwloadedCategories.observeForever{
@@ -48,26 +48,51 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getRandomMeals(): LiveData<List<Meal>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return withContext(Dispatchers.IO){
+            initRandomMeals()
+            return@withContext randomMealDao.getRandomMeal()
+        }
     }
 
+    private suspend fun initTime(){
+        GlobalScope.launch(Dispatchers.IO) {
+            val time = Date(0).time
+            Log.e("1970", Date(time).toString())
+            timeRequestDao.upsert(TimeRequest(1, time, time))
+        }
+    }
 
     private suspend fun initCategory(){
         val lastRequests = timeRequestDao.getAllTimesRequests()
 
         if (lastRequests == null){
-            val time = Date().time
-            timeRequestDao.upsert(TimeRequest(1, time, time))
+            initTime()
             featchCategory()
-            return
         }
 
-//        val test = timeRequestDao.getAllTimesRequests()
-//        Log.e("TIME1", Date(test.lastTimeRandomMeal!!).toString())
-//        Log.e("TIME2", Date(test.lastTimeCategory!!).toString())
+        val test = timeRequestDao.getAllTimesRequests()
+        Log.e("TIME1", Date(test.lastTimeRandomMeal!!).toString())
+        Log.e("TIME2", Date(test.lastTimeCategory!!).toString())
 
         if (fetchIsNeeded(Date(lastRequests.lastTimeCategory!!), 3)){
             featchCategory()
+        }
+    }
+
+    private suspend fun initRandomMeals(){
+        val lastRequests = timeRequestDao.getAllTimesRequests()
+
+        if (lastRequests == null){
+            initTime()
+            featchRandomMeal()
+        }
+
+        val test = timeRequestDao.getAllTimesRequests()
+        Log.e("TIME111", Date(test.lastTimeRandomMeal!!).toString())
+        Log.e("TIME222", Date(test.lastTimeCategory!!).toString())
+
+        if (fetchIsNeeded(Date(lastRequests.lastTimeRandomMeal!!), 1)){
+            featchRandomMeal()
         }
     }
 
@@ -82,8 +107,23 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
+    private fun persistRandomMeal(list:List<Meal>){
+        GlobalScope.launch(Dispatchers.IO){
+            randomMealDao.deleteAllRandomMeal()
+            randomMealDao.insert(list)
+
+            timeRequestDao.updateTimeRandomMeal(Date().time)
+            val test = timeRequestDao.getAllTimesRequests()
+            Log.e("TIME2", test.toString())
+        }
+    }
+
     private suspend fun featchCategory(){
         dataSource.featchCategories()
+    }
+
+    private suspend fun featchRandomMeal(){
+        dataSource.featchMealRandom()
     }
 
     private fun fetchIsNeeded(now:Date, wait:Int):Boolean{

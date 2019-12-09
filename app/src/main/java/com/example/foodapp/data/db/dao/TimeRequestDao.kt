@@ -19,5 +19,5 @@ interface TimeRequestDao {
     suspend fun updateCategoryTime(time:Long)
 
     @Query("UPDATE time_request SET lastTimeRandomMeal = :time WHERE _id = 1")
-    suspend fun updateTimeRandomMealTime(time:Long)
+    suspend fun updateTimeRandomMeal(time:Long)
 }
