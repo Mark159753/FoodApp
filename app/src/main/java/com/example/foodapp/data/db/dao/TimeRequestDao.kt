@@ -14,4 +14,10 @@ interface TimeRequestDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTime(time:TimeRequest)
+
+    @Query("UPDATE time_request SET lastTimeCategory = :time WHERE _id = 1")
+    suspend fun updateCategoryTime(time:Long)
+
+    @Query("UPDATE time_request SET lastTimeRandomMeal = :time WHERE _id = 1")
+    suspend fun updateTimeRandomMealTime(time:Long)
 }

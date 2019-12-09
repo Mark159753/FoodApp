@@ -1,5 +1,6 @@
 package com.example.foodapp.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.foodapp.data.db.dao.CategoryDao
 import com.example.foodapp.data.db.dao.RandomMealDao
@@ -27,7 +28,6 @@ class MainRepositoryImpl @Inject constructor(
 ): MainRepository {
 
     init {
-        lastTimeInit()
         dataSource.apply {
             downloadMealRandom.observeForever{
 
@@ -39,15 +39,6 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun lastTimeInit(){
-        GlobalScope.launch(Dispatchers.IO){
-            val lastTime = timeRequestDao.getAllTimesRequests()
-            if (lastTime.lastTimeCategory == null || lastTime.lastTimeRandomMeal == null){
-                val time = Date().time
-                timeRequestDao.upsert(TimeRequest(1, time, time))
-            }
-        }
-    }
 
     override suspend fun getCategories(): LiveData<List<Category>> {
         return withContext(Dispatchers.IO){
@@ -64,12 +55,18 @@ class MainRepositoryImpl @Inject constructor(
     private suspend fun initCategory(){
         val lastRequests = timeRequestDao.getAllTimesRequests()
 
-        if (lastRequests.lastTimeCategory == null){
+        if (lastRequests == null){
+            val time = Date().time
+            timeRequestDao.upsert(TimeRequest(1, time, time))
             featchCategory()
             return
         }
 
-        if (fetchIsNeeded(Date(lastRequests.lastTimeCategory), 3)){
+//        val test = timeRequestDao.getAllTimesRequests()
+//        Log.e("TIME1", Date(test.lastTimeRandomMeal!!).toString())
+//        Log.e("TIME2", Date(test.lastTimeCategory!!).toString())
+
+        if (fetchIsNeeded(Date(lastRequests.lastTimeCategory!!), 3)){
             featchCategory()
         }
     }
@@ -79,7 +76,9 @@ class MainRepositoryImpl @Inject constructor(
             categoryDao.deleteAllCategories()
             categoryDao.insert(category.categories)
 
-            timeRequestDao.updateTime(TimeRequest(1, Date().time, null))
+            timeRequestDao.updateCategoryTime(Date().time)
+            val test = timeRequestDao.getAllTimesRequests()
+            Log.e("TIME2", test.toString())
         }
     }
 

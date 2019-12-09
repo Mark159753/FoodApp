@@ -15,7 +15,7 @@ interface RandomMealDao {
     suspend fun insert(list: List<Meal>)
 
     @Query("SELECT * FROM random_meals")
-    fun getCategories(): LiveData<List<Category>>
+    fun getCategories(): LiveData<List<Meal>>
 
     @Query("DELETE FROM random_meals")
     suspend fun deleteAllCategories()
