@@ -62,11 +62,9 @@ class MainRepositoryImpl @Inject constructor(
             return
         }
 
-        val test = categoriesTimeDao.getAllTimesRequests()
-        Log.e("TIME2", Date(test.lastTimeCategory!!).toString())
-
         if (fetchIsNeeded(Date(lastRequests.lastTimeCategory!!), 3)){
             featchCategory()
+            Log.e("PRINTRANDOM", "C")
         }
     }
 
@@ -78,11 +76,9 @@ class MainRepositoryImpl @Inject constructor(
             return
         }
 
-        val test = timeRandomMealDao.getAllTimesRequests()
-        Log.e("TIME222", Date(test.lastTimeRandomMealRequest!!).toString())
-
         if (fetchIsNeeded(Date(lastRequests.lastTimeRandomMealRequest!!), 1)){
             featchRandomMeal()
+            Log.e("PRINTRANDOM", "R")
         }
     }
 
@@ -118,7 +114,7 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     private fun fetchIsNeeded(now:Date, wait:Int):Boolean{
-        val before = Date(Date().time + wait * HOUR)
-        return now.after(before)
+        val after = Date(now.time + wait * HOUR)
+        return Date(Date().time).after(after)
     }
 }

@@ -81,7 +81,7 @@ data class Meal(
     @ColumnInfo(name = "strMeasure17")
     val strMeasure17: String?,
     @ColumnInfo(name = "strMeasure18")
-    val strMeasure18: String,
+    val strMeasure18: String?,
     @ColumnInfo(name = "strMeasure19")
     val strMeasure19: String?,
     @ColumnInfo(name = "strMeasure2")

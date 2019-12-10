@@ -8,6 +8,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.foodapp.FoodApp
 import com.example.foodapp.R
 import com.example.foodapp.ui.BaseViewModelFactory
+import com.example.foodapp.ui.main.adapter.PagerMealAdapter
+import com.example.foodapp.ui.main.adapter.PagerRandomMealAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -17,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     @Inject lateinit var viewModelFactory: BaseViewModelFactory
     private lateinit var viewModel: MainViewModel
+    private lateinit var pagerAdapter:PagerMealAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         (application as? FoodApp)?.getAppComponent()
             ?.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+
+        pagerAdapter = PagerMealAdapter(supportFragmentManager)
 
         coroutineScope.launch {
             val categories = viewModel.categories.await()
@@ -36,8 +42,10 @@ class MainActivity : AppCompatActivity() {
 
             randomMeal.observe(this@MainActivity, Observer {
                 if (it == null) return@Observer
-                for (i in it){
-                    Log.e("MEAL", i.toString())
+                pagerAdapter.setDataList(it)
+                viewPager_randomMeal.apply {
+                    adapter = pagerAdapter
+                    pageMargin = 24
                 }
             })
         }
