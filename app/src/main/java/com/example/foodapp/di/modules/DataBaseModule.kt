@@ -4,8 +4,8 @@ import android.content.Context
 import com.example.foodapp.data.db.FoodDB
 import com.example.foodapp.data.db.dao.CategoryDao
 import com.example.foodapp.data.db.dao.RandomMealDao
-import com.example.foodapp.data.db.dao.TimeRequestDao
-import dagger.Binds
+import com.example.foodapp.data.db.dao.CategoriesTimeDao
+import com.example.foodapp.data.db.dao.TimeRandomMealDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -33,7 +33,13 @@ class DataBaseModule {
 
     @Provides
     @Singleton
-    fun provideTimeRequestDao(foodDB: FoodDB):TimeRequestDao{
-        return foodDB.getTimeRequestDao()
+    fun provideTimeRequestDao(foodDB: FoodDB):CategoriesTimeDao{
+        return foodDB.getTimeCategoriesDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTimeRandomMEalDao(foodDB: FoodDB):TimeRandomMealDao{
+        return foodDB.getTimeRandomMealDato()
     }
 }

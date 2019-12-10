@@ -12,4 +12,8 @@ class MainViewModel @Inject constructor(
     val categories by lazyDeferred {
         repository.getCategories()
     }
+
+    val randomMeal by lazyDeferred {
+        repository.getRandomMeals()
+    }
 }

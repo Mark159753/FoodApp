@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.foodapp.FoodApp
 import com.example.foodapp.R
@@ -27,9 +26,19 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
 
         coroutineScope.launch {
-            val test = viewModel.categories.await()
-            test.observe(this@MainActivity, Observer {
+            val categories = viewModel.categories.await()
+            val randomMeal = viewModel.randomMeal.await()
+
+            categories.observe(this@MainActivity, Observer {
+                if (it == null) return@Observer
                 Log.e("TEST", it.toString())
+            })
+
+            randomMeal.observe(this@MainActivity, Observer {
+                if (it == null) return@Observer
+                for (i in it){
+                    Log.e("MEAL", i.toString())
+                }
             })
         }
 
