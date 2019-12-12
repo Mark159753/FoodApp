@@ -13,7 +13,8 @@ import com.example.foodapp.data.model.Meal
 import com.example.foodapp.data.model.TimeCategoriesRequest
 import com.example.foodapp.data.model.TimeRandomMealRequest
 
-@Database(entities = [Category::class, Meal::class, TimeCategoriesRequest::class, TimeRandomMealRequest::class], version = 1)
+@Database(entities = [Category::class, Meal::class, TimeCategoriesRequest::class, TimeRandomMealRequest::class], version = 1,
+    exportSchema = false)
 abstract class FoodDB: RoomDatabase() {
 
     abstract fun getCategoriesDao():CategoryDao

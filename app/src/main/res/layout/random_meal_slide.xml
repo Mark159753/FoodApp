@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:toos="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    toos:cardCornerRadius="9dp"
     android:layout_width="match_parent"
-    android:background="@drawable/radius_slider"
     android:layout_height="wrap_content">
     <FrameLayout
         android:layout_width="match_parent"
@@ -18,9 +18,11 @@
             android:id="@+id/meal_text_slider"
             android:textSize="22sp"
             android:textColor="#FFF"
-            android:layout_gravity="center|bottom"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </FrameLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

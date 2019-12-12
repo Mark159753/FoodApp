@@ -11,7 +11,6 @@ import com.example.foodapp.R
 import com.example.foodapp.data.model.Meal
 import com.google.android.material.shape.RoundedCornerTreatment
 import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.android.synthetic.main.random_meal_slide.view.*
 
 class PagerRandomMealAdapter(private val context: Context):PagerAdapter() {
