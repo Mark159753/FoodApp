@@ -1,9 +1,12 @@
 package com.example.foodapp.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +15,7 @@ import com.example.foodapp.R
 import com.example.foodapp.ui.BaseViewModelFactory
 import com.example.foodapp.ui.main.adapter.PagerRandomMealAdapter
 import com.example.foodapp.ui.main.adapter.RecyclerViewCategoriesAdapter
+import com.example.foodapp.ui.search.SearchActivity
 import com.example.foodapp.untils.SpaceItemDecorator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         initRandomPager()
         initCategories()
+        initFakeSearchView()
 
         coroutineScope.launch {
             val categories = viewModel.categories.await()
@@ -57,9 +62,16 @@ class MainActivity : AppCompatActivity() {
                 pagerAdapter.setDataList(it)
             })
         }
-
     }
 
+    private fun initFakeSearchView(){
+        fake_searchView.setOnClickListener {
+            val activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                fake_searchView, "search_transition")
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent, activityOptionsCompat.toBundle())
+        }
+    }
 
     private fun initRandomPager(){
         viewPager_randomMeal.apply {

@@ -9,6 +9,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 const val BASE_URL = "https://www.themealdb.com/api/json/v1/"
 const val API_KEY = "1/"
@@ -21,25 +22,14 @@ interface ApiService {
     @GET("categories.php")
     suspend fun getCategories():Response<CategoriesResponse>
 
+    @GET("search.php")
+    suspend fun searchRequest(@Query("s") request:String):Response<MealsResponse>
+
     companion object{
         operator fun invoke():ApiService{
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
 
-//            val requestInterceptor = object :Interceptor{
-//                override fun intercept(chain: Interceptor.Chain): Response {
-//                    val mUrl = chain.request()
-//                        .url
-//                        .newBuilder()
-//                        .addPathSegment(API_KEY)
-//                        .build()
-//                    val request = chain.request()
-//                        .newBuilder()
-//                        .url(mUrl)
-//                        .build()
-//                    return chain.proceed(request)
-//                }
-//            }
             val okkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build()
