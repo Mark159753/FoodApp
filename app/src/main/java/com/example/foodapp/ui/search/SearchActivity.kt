@@ -2,6 +2,7 @@ package com.example.foodapp.ui.search
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +15,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodapp.FoodApp
 import com.example.foodapp.R
+import com.example.foodapp.data.model.Meal
 import com.example.foodapp.ui.BaseViewModelFactory
+import com.example.foodapp.ui.details.DetailsActivity
 import com.example.foodapp.ui.search.adapter.RecyclerSearchAdapter
+import com.example.foodapp.untils.Actions
 import kotlinx.android.synthetic.main.activity_search_view.*
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), RecyclerSearchAdapter.OnSearchItemClickListener {
 
     @Inject lateinit var viewModelFactory: BaseViewModelFactory
     private lateinit var searchViewModel: SearchViewModel
@@ -40,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         searchAdapter = RecyclerSearchAdapter()
+        searchAdapter.setClickListener(this)
 
         initSearchList()
         initResponseListener()
@@ -91,4 +96,10 @@ class SearchActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onItemClick(pos: Int, itemMeal: Meal) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.action = Actions.ALREADY_HAVE_DATA
+        intent.putExtra(Actions.DETAIL_MEAL, itemMeal)
+        startActivity(intent)
+    }
 }

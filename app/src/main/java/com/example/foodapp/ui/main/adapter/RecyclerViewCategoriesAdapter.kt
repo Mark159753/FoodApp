@@ -14,11 +14,17 @@ import kotlinx.android.synthetic.main.categorie_item.view.*
 class RecyclerViewCategoriesAdapter: RecyclerView.Adapter<RecyclerViewCategoriesAdapter.Holder>() {
 
     private var list = emptyList<Category>()
+    private var listener:CategoryClickListener? = null
 
     fun setDateList(list: List<Category>){
         this.list = list
         notifyDataSetChanged()
     }
+
+    fun setListener(listener:CategoryClickListener){
+        this.listener = listener
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.categorie_item, parent, false)
@@ -36,8 +42,20 @@ class RecyclerViewCategoriesAdapter: RecyclerView.Adapter<RecyclerViewCategories
             .into(holder.img)
     }
 
-    inner class Holder(view:View):RecyclerView.ViewHolder(view){
+    inner class Holder(view:View):RecyclerView.ViewHolder(view), View.OnClickListener{
         val img = view.findViewById<ImageView>(R.id.category_thumb)
         val categoryName = view.findViewById<TextView>(R.id.category_text)
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            listener?.onCategoryClick(adapterPosition)
+        }
+    }
+
+    interface CategoryClickListener{
+        fun onCategoryClick(position:Int)
     }
 }

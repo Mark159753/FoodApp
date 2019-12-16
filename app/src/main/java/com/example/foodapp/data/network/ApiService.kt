@@ -1,6 +1,7 @@
 package com.example.foodapp.data.network
 
 import com.example.foodapp.data.model.CategoriesResponse
+import com.example.foodapp.data.model.Meal
 import com.example.foodapp.data.model.MealsResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,6 +25,12 @@ interface ApiService {
 
     @GET("search.php")
     suspend fun searchRequest(@Query("s") request:String):Response<MealsResponse>
+
+    @GET("lookup.php")
+    suspend fun getMealById(@Query("i") id:String):Response<MealsResponse>
+
+    @GET("filter.php")
+    suspend fun getMealByCategory(@Query("c") category:String):Response<MealsResponse>
 
     companion object{
         operator fun invoke():ApiService{

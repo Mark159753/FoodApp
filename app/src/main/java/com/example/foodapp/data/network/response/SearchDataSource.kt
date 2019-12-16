@@ -5,8 +5,7 @@ import com.example.foodapp.data.model.Meal
 
 interface SearchDataSource {
 
-    val downloadSearchMeal:LiveData<List<Meal>>
+    val downloadData: LiveData<List<Meal>>
 
-    suspend fun searchRequest(request:String)
-
+    suspend fun makeRequest(request:String)
 }

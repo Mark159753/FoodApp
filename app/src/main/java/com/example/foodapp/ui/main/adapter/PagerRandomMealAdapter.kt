@@ -15,11 +15,16 @@ import kotlinx.android.synthetic.main.random_meal_slide.view.*
 
 class PagerRandomMealAdapter(private val context: Context):PagerAdapter() {
 
+    private var listener:OnRandomMealClickListener? = null
     private var list = emptyList<Meal>()
 
     fun setDataList(list: List<Meal>){
         this.list = list
         notifyDataSetChanged()
+    }
+
+    fun setListenr(listener:OnRandomMealClickListener){
+        this.listener = listener
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -39,13 +44,19 @@ class PagerRandomMealAdapter(private val context: Context):PagerAdapter() {
             .load(list[position].strMealThumb)
             .into(img)
         text.text = list[position].strMeal
+
+        v.setOnClickListener { this.listener?.onRandomClick(position, list[position]) }
+
         container.addView(v)
         return v
     }
 
-
-
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
+    }
+
+    interface OnRandomMealClickListener{
+
+        fun onRandomClick(pos:Int, item:Meal)
     }
 }

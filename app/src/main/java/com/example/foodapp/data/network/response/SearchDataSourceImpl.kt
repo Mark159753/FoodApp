@@ -14,10 +14,10 @@ class SearchDataSourceImpl @Inject constructor(
     private val apiService: ApiService
 ): SearchDataSource {
     private val _downloadSearchMeal = MutableLiveData<List<Meal>>()
-    override val downloadSearchMeal: LiveData<List<Meal>>
+    override val downloadData: LiveData<List<Meal>>
         get() = _downloadSearchMeal
 
-    override suspend fun searchRequest(request: String) {
+    override suspend fun makeRequest(request: String) {
         try {
             val response = withContext(Dispatchers.IO){
                 apiService.searchRequest(request)

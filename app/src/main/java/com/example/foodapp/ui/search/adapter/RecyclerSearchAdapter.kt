@@ -12,11 +12,16 @@ import com.squareup.picasso.Picasso
 
 class RecyclerSearchAdapter: RecyclerView.Adapter<RecyclerSearchAdapter.Holder>() {
 
+    private var listener:OnSearchItemClickListener? = null
     private var list = emptyList<Meal>()
 
     fun setListData(list: List<Meal>?){
         notifyDataSetChanged()
         this.list = list ?: emptyList()
+    }
+
+    fun setClickListener(listener:OnSearchItemClickListener){
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -43,5 +48,13 @@ class RecyclerSearchAdapter: RecyclerView.Adapter<RecyclerSearchAdapter.Holder>(
         val title = view.findViewById<TextView>(R.id.search_title)
         val instruction = view.findViewById<TextView>(R.id.search_instruction)
         val img = view.findViewById<ImageView>(R.id.search_img)
+
+        init {
+            view.setOnClickListener { listener?.onItemClick(adapterPosition, list[adapterPosition]) }
+        }
+    }
+
+    interface OnSearchItemClickListener{
+        fun onItemClick(pos:Int, itemMeal:Meal)
     }
 }

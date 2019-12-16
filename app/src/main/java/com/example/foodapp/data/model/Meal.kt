@@ -1,11 +1,14 @@
 package com.example.foodapp.data.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.RoomWarnings
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "random_meals")
 data class Meal(
     @ColumnInfo(name = "idMeal")
@@ -108,7 +111,7 @@ data class Meal(
     val strTags: String?,
     @ColumnInfo(name = "strYoutube")
     val strYoutube: String?
-){
+): Parcelable{
     @PrimaryKey(autoGenerate = true)
     var _id:Int? = null
 }

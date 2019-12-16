@@ -1,9 +1,6 @@
 package com.example.foodapp.di.modules
 
-import com.example.foodapp.data.network.response.NetworkDataSource
-import com.example.foodapp.data.network.response.NetworkDataSourseImpl
-import com.example.foodapp.data.network.response.SearchDataSource
-import com.example.foodapp.data.network.response.SearchDataSourceImpl
+import com.example.foodapp.data.network.response.*
 import com.example.foodapp.data.repository.MainRepository
 import com.example.foodapp.data.repository.MainRepositoryImpl
 import dagger.Binds
@@ -23,4 +20,10 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindSearchDataSource(par:SearchDataSourceImpl):SearchDataSource
+
+    @Binds
+    abstract fun bindMealDataSource(par:MealDetailDataSource):MealDataSource
+
+    @Binds
+    abstract fun bindCategoryMealDataSource(par:CategoryMealDataSourceImpl):CategoryMealDataSource
 }

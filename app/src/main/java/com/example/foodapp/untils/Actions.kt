@@ -1,0 +1,10 @@
+package com.example.foodapp.untils
+
+
+object Actions {
+    val ALREADY_HAVE_DATA = "ALREADY_HAVE_DATA"
+    val NEED_SERVER_REQUEST = "NEED_SERVER_REQUEST"
+    val CATEGORY_LIST = "CATEGORY_LIST"
+    val CATEGORY_POSITION = "CATEGORY_POSITION"
+    val DETAIL_MEAL = "DETAIL_MEAL"
+}

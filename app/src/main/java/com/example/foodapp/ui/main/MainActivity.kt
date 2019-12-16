@@ -12,16 +12,21 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.foodapp.FoodApp
 import com.example.foodapp.R
+import com.example.foodapp.data.model.Meal
 import com.example.foodapp.ui.BaseViewModelFactory
+import com.example.foodapp.ui.category.CategoryActivity
+import com.example.foodapp.ui.details.DetailsActivity
 import com.example.foodapp.ui.main.adapter.PagerRandomMealAdapter
 import com.example.foodapp.ui.main.adapter.RecyclerViewCategoriesAdapter
 import com.example.foodapp.ui.search.SearchActivity
+import com.example.foodapp.untils.Actions
 import com.example.foodapp.untils.SpaceItemDecorator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PagerRandomMealAdapter.OnRandomMealClickListener,
+RecyclerViewCategoriesAdapter.CategoryClickListener{
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -42,7 +47,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         pagerAdapter = PagerRandomMealAdapter(this)
+        pagerAdapter.setListenr(this)
         categoryAdapter = RecyclerViewCategoriesAdapter()
+        categoryAdapter.setListener(this)
 
         initRandomPager()
         initCategories()
@@ -89,6 +96,20 @@ class MainActivity : AppCompatActivity() {
             isNestedScrollingEnabled = true
             addItemDecoration(SpaceItemDecorator(5))
         }
+    }
+
+
+    override fun onRandomClick(pos: Int, item: Meal) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.action = Actions.ALREADY_HAVE_DATA
+        intent.putExtra(Actions.DETAIL_MEAL, item)
+        startActivity(intent)
+    }
+
+    override fun onCategoryClick(position: Int) {
+        val intent = Intent(this, CategoryActivity::class.java)
+        intent.putExtra(Actions.CATEGORY_POSITION, position)
+        startActivity(intent)
     }
 
     override fun onDestroy() {
