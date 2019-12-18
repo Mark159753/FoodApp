@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class CategoryMealDataSourceImpl @Inject constructor(
     private val apiService: ApiService
-): CategoryMealDataSource {
+): MealDataSource {
 
     private val _downloadData = MutableLiveData<List<Meal>>()
     override val downloadData: LiveData<List<Meal>>

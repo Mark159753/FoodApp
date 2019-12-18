@@ -1,12 +1,14 @@
 package com.example.foodapp.ui.category.fragment
 
 import androidx.lifecycle.ViewModel
-import com.example.foodapp.data.network.response.CategoryMealDataSource
+import com.example.foodapp.data.network.response.MealDataSource
 import kotlinx.coroutines.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class CategoryFragmentViewModel @Inject constructor(
-    private val categoryMealDataSource: CategoryMealDataSource
+    @param:Named("CategoryMealDataSourceImpl")
+    private val categoryMealDataSource: MealDataSource
 ):ViewModel() {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)

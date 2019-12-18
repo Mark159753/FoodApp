@@ -2,14 +2,14 @@ package com.example.foodapp.ui.search
 
 import androidx.lifecycle.ViewModel
 import com.example.foodapp.data.network.response.MealDataSource
-import com.example.foodapp.data.network.response.SearchDataSource
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Named
 
 
 class SearchViewModel @Inject constructor(
-    private val searchDataSource: SearchDataSource
+    @param:Named("SearchDataSourceImpl")
+    private val searchDataSource: MealDataSource
 ): ViewModel() {
 
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)

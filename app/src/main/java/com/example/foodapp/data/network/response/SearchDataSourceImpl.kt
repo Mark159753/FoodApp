@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class SearchDataSourceImpl @Inject constructor(
     private val apiService: ApiService
-): SearchDataSource {
+): MealDataSource {
     private val _downloadSearchMeal = MutableLiveData<List<Meal>>()
     override val downloadData: LiveData<List<Meal>>
         get() = _downloadSearchMeal
